@@ -1,3 +1,74 @@
+    // initialize version checking
+    $ms.sourceFiles.doVersionChecking([
+	// check file times to manage js file versions for dynamically loaded files (files not explicitly loaded below)
+	// specify url of directories to read file times for
+	$ms.STATIC_JS_COMMON,
+	$ms.STATIC_DEFAULT_ROOT + '/css',
+    ]);
+	
+    $ms.sourceFiles.add([
+	{file: function gemDragdropX(){gemDragdrop()}, dependencies: [{file: function onload(){}}, {file: "dragdrop.min.js", ns: "DragDrop"}]},
+	{file: function registerMenuDragdropX(){registerMenuDragdrop()}, dependencies: [{file: function onload(){}}, {file: "dragdrop.min.js", ns: "DragDrop"}]}
+    ]);
+    $ms.sourceFiles.load();
+
+
+/*
+ * 
+ * put all classes in com.mseifert name space
+ * two alias in the public space are used:
+ *	$msRoot => com.mseifert
+ *	$ms	=> com.mseifert.common
+ */
+var com = com || {};
+$msRoot = com.mseifert = function () {
+    var topLevelDomain = "com";
+    var namespace = "mseifert";
+    
+    function createNS(newSpace) {
+	var parts = newSpace.split('.'),
+		parent = this;
+	if (parts.length >= 2 && parts[0] == topLevelDomain && parts[1] == namespace) {
+	    // passed as com.mseifert....
+	    parts = parts.slice(2);
+	}
+	for (var i = 0, length = parts.length; i < length; i++) {
+	    parent[parts[i]] = parent[parts[i]] || {};
+	    parent = parent[parts[i]];
+	}
+	return parent;
+    }
+    function getChildClasses(obj, className) {
+	// combine an existing class with a newly created one
+	// used when a parent class has child classes which get created before the parent
+	// or when a class is split across multiple files
+	if (typeof className == "undefined"){
+	    var ns;
+	    if (typeof $msRoot !== "undefined"){
+		ns = $msRoot;
+	    }
+	} else {
+	    ns = $msRoot[className];
+	}
+	if (ns) {
+	    for (var prop in ns) {
+		if (ns.hasOwnProperty(prop)) {
+		    // add child class to the obj
+		    obj[prop] = ns[prop];
+		}
+	    }
+	}
+    }
+
+    var msRoot =  {
+	    createNS: createNS,
+	    getChildClasses: getChildClasses
+	}
+    getChildClasses(msRoot);
+    return msRoot;    
+}();
+
+$ms = $msRoot.common = function () {
     // manage dynamic loading of source files (js, css, img) and js functions
     var sourceFiles = {
 	queued: [],
@@ -348,4 +419,11 @@
 		document.head.appendChild(item);
 	    }
 	} 
+    }	
+    var common = {
+	sourceFiles: sourceFiles,
     }
+    $msRoot.getChildClasses(common, "common");
+    return common;
+}();
+	
