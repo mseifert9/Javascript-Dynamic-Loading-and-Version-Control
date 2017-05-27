@@ -25,13 +25,13 @@ Declarations listed are for files dependent on this file and / or functions that
 <b>Files in the project</b>
 
 <b>demo.php (the main php file)</b>
-1) Loads the javascript common library (mseifert-sourcefiles.js)
-2) Loads the javascript file hello.js
+=> Loads the javascript common library (mseifert-sourcefiles.js)
+=> Loads the javascript file hello.js
 The PHP version() function adds the file timestamp to hello.js.
 
     <script src="<?php echo version(STATIC_JS_COMMON, 'hello.js') ?>"></script>
 
-3) Specify the directories to poll on the server. 
+=>Specify the directories to poll on the server. 
 The doVersionChecking() function makes an HTTP request to the server.
 moddate.php is called and returns all file timestamps for the specified directories.
 
