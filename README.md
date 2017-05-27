@@ -25,6 +25,7 @@ Declarations listed are for files dependent on this file and / or functions that
 <b>Files in the project</b>
 
 <b>demo.php (the main php file)</b>
+
 => Loads the javascript common library (mseifert-sourcefiles.js)
 => Loads the javascript file hello.js
 The PHP version() function adds the file timestamp to hello.js.
