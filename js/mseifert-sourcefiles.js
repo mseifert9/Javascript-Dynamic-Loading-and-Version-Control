@@ -314,7 +314,6 @@ $ms = $msRoot.common = function () {
 	    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 	    http.onreadystatechange = function() {//Call a function when the state changes.
-v("state: " + http.readyState, "status: " + http.status, "Text: " + http.responseText);
 		if(http.readyState == 4 && http.status == 200) {
 		    var response = http.responseText;
 		    var data = JSON.parse(response);
