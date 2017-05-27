@@ -1,18 +1,3 @@
-    // initialize version checking
-    $ms.sourceFiles.doVersionChecking([
-	// check file times to manage js file versions for dynamically loaded files (files not explicitly loaded below)
-	// specify url of directories to read file times for
-	$ms.STATIC_JS_COMMON,
-	$ms.STATIC_DEFAULT_ROOT + '/css',
-    ]);
-	
-    $ms.sourceFiles.add([
-	{file: function gemDragdropX(){gemDragdrop()}, dependencies: [{file: function onload(){}}, {file: "dragdrop.min.js", ns: "DragDrop"}]},
-	{file: function registerMenuDragdropX(){registerMenuDragdrop()}, dependencies: [{file: function onload(){}}, {file: "dragdrop.min.js", ns: "DragDrop"}]}
-    ]);
-    $ms.sourceFiles.load();
-
-
 /*
  * 
  * put all classes in com.mseifert name space
@@ -84,7 +69,7 @@ $ms = $msRoot.common = function () {
 	    // .htaccess removes the file version from the file name	    
 	    var dependencies = [
 		// all functions must have a unique name - create one on the fly
-		{file: new Function("return function versionChecking" + sourceFiles.versionCheck.length + "(){sourceFiles.versionChecking(" + JSON.stringify(path) + ")}")()}
+		{file: new Function("return function versionChecking" + sourceFiles.versionCheck.length + "(){$ms.sourceFiles.versionChecking(" + JSON.stringify(path) + ")}")()}
 	    ];
 	    sourceFiles.add(dependencies);
 	    sourceFiles.load();
@@ -94,6 +79,25 @@ $ms = $msRoot.common = function () {
 		source = [source];
 	    }
 	    for (var i = 0; i < source.length; i++){
+		// passed properties of source:
+		// baseDir	base directory flag
+		//		js = common js directory
+		//		css = common css directory
+		//		img = common img directory
+		//		root = root server directory
+		//		site = root site directory
+		//		empty = use extension to determine common directory
+		// subDir	directory under the base directory
+		// file		file name without path and with optional passed parameters - full path will be added to the property
+		//		OR function
+		// dependencies	object containing source files - has same properties as source and will add recursively
+		
+		// additional propterties set internally
+		// baseFile	file name stripped of passed parameters (calculated from file)
+		//		OR function name
+		// type		type of file (js, css, img)
+		// loaded	flag that file has been loaded
+		
 		// test if namespace specified and if already exists
 		if (sourceFiles.alreadyLoadedNs(source[i].ns)) continue;
 		
@@ -111,20 +115,19 @@ $ms = $msRoot.common = function () {
 			}
 		    }
 		} else {
-		    var baseFile = source[i].file.substr(source[i].file.lastIndexOf("/") + 1);
-		    var split = baseFile.split("?");
-		    baseFile = split[0];
-		    source[i].baseFile = baseFile
-		    var ext = baseFile.substr(baseFile.lastIndexOf(".") + 1);
+		    source[i].baseFile = source[i].file.split("?")[0];
+		    var ext = source[i].baseFile.substr(source[i].baseFile.lastIndexOf(".") + 1);
 		    if (ext == "js"){
 			source[i].type = "js";
 		    } else if (ext == "css"){
 			source[i].type = "css";
 		    } else if (ext == "php"){
-			if (baseFile.indexOf("css.php") !== -1){
+			if (source[i].baseFile.indexOf("css.php") !== -1){
+			    // css files which are being processed via php (so can pass variables)
 			    source[i].type = "css";
 			} else {
-			    source[i].type = "php";
+			    source[i].type = "unknown";
+			    console.log("Don't know what to do with source file type `php`: " + source[i].file);
 			}
 		    } else if (["jpg", "png", "gif"].indexOf(ext) !== -1){
 			source[i].type = "img";
@@ -132,16 +135,14 @@ $ms = $msRoot.common = function () {
 			source[i].type = "unknown";
 			console.log("Source File unknown type for: " + source[i].file);
 		    }
-		    
-		    var dir = sourceFiles.buildUrl();
+		    var dir = sourceFiles.buildUrl(source[i]);
 		    
 		    var subDir = "";
-		    if (source[i].file.indexOf("/") !== -1) {
-			// full directory explicitly set
-		    } else if (typeof source[i].subDir !== "undefined"){
-			// relative to specified or default subDir
-			subDir = "/" + source[i].subDir;			
+		    if (typeof source[i].subDir !== "undefined"){
+			// add preceeding forward slash if not already there
+			subDir = (source[i].subDir.indexOf("/") !== 0 ? "/" : "") + source[i].subDir;
 		    }
+		    // add the full path to the file
 		    source[i].file = dir + subDir + "/" + source[i].file;
 		    source[i].loaded = false;
 		}
@@ -150,7 +151,7 @@ $ms = $msRoot.common = function () {
 		
 		if (source[i].dependencies){
 		    for (var j = 0; j < source[i].dependencies.length; j++){
-			// queue the dependencies
+			// recursively add the dependencies
 			sourceFiles.add(source[i].dependencies[j]);
 		    }
 		} else {
@@ -354,35 +355,38 @@ $ms = $msRoot.common = function () {
 	    var result = /^function\s+(?:bound\s*)?([^\(\s]+)/.exec(func);
 	    return result ? result[1] : "";
 	},
-	buildUrl: function(dir){
-	    if (typeof dir == "undefined" || dir == "js-common"){
-		// default = js-common
-		if (typeof $ms.STATIC_JS_COMMON !== "undefined"){
-		    return $ms.STATIC_JS_COMMON;
-		}
-		return sourceFiles.currentDir() + "/js-common";		
-	    } else if (dir == "css-common"){
-		if (typeof $ms.STATIC_CSS_COMMON !== "undefined"){
-		    return $ms.STATIC_CSS_COMMON;
-		}
-		return sourceFiles.currentDir() + "/css-common";		
-	    } else if (dir == "img-common"){
-		if (typeof $ms.STATIC_IMG_COMMON !== "undefined"){
-		    return $ms.STATIC_IMG_COMMON;
-		}
-		return sourceFiles.currentDir() + "/img-common";
-	    } else if (dir == "root"){
-		if (typeof $ms.STATIC_TOP_ROOT !== "undefined"){
-		    return $ms.STATIC_TOP_ROOT;
-		}
-		return sourceFiles.currentDir();
-	    } else {
-		console.log("sourceFiles => Invalid dir specified: " + dir);
-		return "";
+	buildUrl: function(source){
+	    if (typeof source.baseDir == "undefined"){
+		source.baseDir = source.type;
 	    }
-	},
-	currentDir: function(){
-	    return window.location.origin ? window.location.origin + '/' : window.location.protocol + '/' + window.location.host;
+	    var urlDir = function(baseDir){
+		if (baseDir.indexOf("/") !== -1){
+		    // specified path - relative to current path
+		    // to use relative to different path, use one of the flags below
+		    return baseDir;
+		} else if (baseDir.indexOf("js") !== -1){
+		    return "STATIC_JS_COMMON";
+		} else if (baseDir.indexOf("css") !== -1){
+		    return "STATIC_CSS_COMMON";
+		} else if (baseDir.indexOf("img") !== -1){
+		    return "STATIC_IMG_COMMON";
+		} else if (baseDir.indexOf("site") !== -1){
+		    return "STATIC_SITE_ROOT";
+		} else if (baseDir.indexOf("root") !== -1){
+		    // root of server at top of domain tree
+		    return "STATIC_TOP_ROOT";
+		} else {
+		    // invalid - unless new namespace property added to match
+		    return baseDir;
+		}
+	    }(source.baseDir);
+	    
+	    if (typeof $ms[urlDir] !== "undefined"){
+		// standard diredctory stored in namespace variable
+		return $ms[urlDir];
+	    } else {
+		return window.location.origin ? window.location.origin + '/' : window.location.protocol + '/' + window.location.host + urlDir;
+	    }
 	},
     }
 
@@ -419,7 +423,7 @@ $ms = $msRoot.common = function () {
 		document.head.appendChild(item);
 	    }
 	} 
-    }	
+    }
     var common = {
 	sourceFiles: sourceFiles,
     }
