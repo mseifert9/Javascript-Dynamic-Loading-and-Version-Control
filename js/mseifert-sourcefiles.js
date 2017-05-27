@@ -209,7 +209,7 @@ $ms = $msRoot.common = function () {
 			}
 			if (result !== false){
 			    sourceFiles.source[i].loaded = true;
-			    sourceFiles.onLoad({target: {src: sourceFiles.source[i].baseFile}});
+			    sourceFiles.onload({target: {src: sourceFiles.source[i].baseFile}});
 			}
 			continue;
 		    }
@@ -232,7 +232,7 @@ $ms = $msRoot.common = function () {
 		    sourceFiles.loading.push(sourceFiles.source[i].baseFile);
 
 		    // file - load the source file
-		    loadSourceFile(sourceFiles.source[i].file, sourceFiles.source[i].type, sourceFiles.onLoad)
+		    loadSourceFile(sourceFiles.source[i].file, sourceFiles.source[i].type, sourceFiles.onload)
 		}
 	    }
 	},
@@ -250,7 +250,7 @@ $ms = $msRoot.common = function () {
 	    // namespace exists
 	    return true;
 	},
-	onLoad: function(e){
+	onload: function(e){
 	    // flag file as loaded
 	    var baseFile = e.target.src.substr(e.target.src.lastIndexOf("/") + 1);
 	    var split = baseFile.split("?");
@@ -260,9 +260,9 @@ $ms = $msRoot.common = function () {
 	    for (var i = 0; i < sourceFiles.source.length; i++){
 		if (sourceFiles.source[i].baseFile == baseFile){
 		    sourceFiles.source[i].loaded = true;
-		    if (sourceFiles.source[i].onLoad){
+		    if (sourceFiles.source[i].onload){
 			// custom onLoad
-			sourceFiles.source[i].onLoad();
+			sourceFiles.source[i].onload();
 		    }
 		    break;
 		}
