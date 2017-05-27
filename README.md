@@ -25,6 +25,7 @@ Note:
 All declarations listed in a .js file are for files dependent on this file. Declarations can include dependencies which must be loaded or executed first. In this example, the file dragdrop.min.js must be loaded and the window's load event must have fired before the function doSomethingOnLoad is run. But the file custom-dialog.min.js will be loaded immediately.
 
 demo.php (the main php file)
+/*
 1) Load the javascript common library (mseifert-sourcefiles.js)
 2) Load a javascript file - e.g. hello.js
     The PHP version() function adds the file timestamp to this file.
@@ -34,7 +35,7 @@ demo.php (the main php file)
 3) Specify the directories to poll on the server. 
     The doVersionChecking() function makes an HTTP request to the server.
     moddate.php is called and returns all file timestamps for the specified directories.
-
+*/
     <script>
         sourceFiles.doVersionChecking([
             // specify url of directories to read modification timestamps for
