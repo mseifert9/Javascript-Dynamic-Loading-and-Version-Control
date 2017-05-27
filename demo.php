@@ -1,41 +1,30 @@
-<?php
-    // define paths for php - need both url and absolute paths for each location
-    define("STATIC_TOP_ROOT", "http://static-mseifert/demo");
-    define("STATIC_IMG_COMMON", "http://static-mseifert/demo/img-common");
-    define("STATIC_JS_COMMON", "http://static-mseifert/demo/js-common");
-    define("STATIC_CSS_COMMON", "http://static-mseifert/demo/css-common");
-    define("FULL_TOP_ROOT", "D:/Website/mseifert/demo");
-    define("FULL_IMG_COMMON", "D:/Website/mseifert/demo/img-common");
-    define("FULL_JS_COMMON", "D:/Website/mseifert/demo/js-common");
-    define("FULL_CSS_COMMON", "D:/Website/mseifert/demo/css-common");
+<?php 
+    // paths.php 
+    //	    defines php path constants and js path variables
+    //	    creates the js namespace where the paths are stored
+    //	    contains basic error checking code - error.log in the demo directory will contain php errors
+    include "paths.php" ;
 ?>
-<script>
-    // define url paths for javascript
-	$ms.STATIC_TOP_ROOT = "http://static-mseifert/demo";
-	$ms.STATIC_IMG_COMMON = "http://static-mseifert/demo/img-common";
-	$ms.STATIC_JS_COMMON = "http://static-mseifert/demo/js-common";
-	$ms.STATIC_CSS_COMMON = "http://static-mseifert/demo/css-common";
-</script>
 
-<!-- Load the javascript library which creates the namespace and has shared functions-->
+<!-- Load the javascript common library which extends the namespace and adds to it shared functions-->
 <script src="<?php echo version(STATIC_JS_COMMON, '/mseifert-sourcefiles.js') ?>"></script>
 
 <script>
-$ms.sourceFiles.doVersionChecking([
-	// check file times to manage js file versions for dynamically loaded files (files not explicitly loaded below)
-	// specify url of directories to read file times for
+    // check file times to manage js file versions for dynamically loaded files (files not explicitly loaded by php)
+    // specify url of directories to read file times for
+    $ms.sourceFiles.doVersionChecking([
 	$ms.STATIC_JS_COMMON
-]);
+    ]);
 
-/*  dynamically load a javascript file and execute a js function 
-    the function sayHello() contained in hello.js will be called once the following two dependencies are met:
-    1) the document is loaded
-    2) hello.js is loaded (which will happen automatically)
-    
-    in addition hello.js won't load until a dependency defined within it is loaded
-*/    
-$ms.sourceFiles.add([
-	{file: function doSomething(){sayHello(Date.now())}, dependencies: [{file: function onload(){}}, {file: "hello.js", ns: "Hello"}]}
-]);
-$ms.sourceFiles.load();
+    /*	dynamically load the javascript function doSomething() with the two dependencies:
+     *	    1) the document is loaded
+     *	    2) hello.js is loaded
+     *	hello.js will be automatically queued for loading
+     *	in addition, hello.js specifies to dynamically load the dependent files /js/foo/bar.js and /img/star-18.png
+    */    
+    $ms.sourceFiles.add([
+	    {file: function doSomething(){$ms.Hello.sayHello("Click Me")}, 
+		dependencies: [{file: function onload(){}}, {file: "hello.js", ns: "Hello"}]}
+    ]);
+    $ms.sourceFiles.load();
 </script>
