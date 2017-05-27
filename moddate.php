@@ -2,7 +2,7 @@
 // this file is called by javascript requesting file information
 // it returns timestamp information for the files in directories specified
 
-// common.php - an include file shared by demo.php and moddate.php
+// common.php - and include file shared by demo.php and moddate.php
 include "common.php";
 if (!isset($_POST)) {
     return;
@@ -50,9 +50,10 @@ for ($j = 0; $j < count($aurlpath); $j++){
 	}
     }
     if (!$valid){
+	// test sub dir of valid path
 	for ($i = 0; $i < count($validpassedpaths); $i++){
 	    if (strpos($aurlpath[$j], $validpassedpaths[$i] . "/") === 0){
-		// sub dir of valid path
+		// is sub dir of valid path
 		$dir = $validpassedpaths[$i];
 		$subdir = substr($aurlpath[$j], strlen($dir));
 		$valid = true;
@@ -61,10 +62,16 @@ for ($j = 0; $j < count($aurlpath); $j++){
 	}
     }
     if (!$valid){
-	return returnError("Error. Url directory is not valid: " . $aurlpath[$j]);
+	// invalid url - test if subdirctory (js, css, img) only was passed (default)
+	// if so, translate to full absolute path
+	$path = url2absolute($aurlpath[$j]);
+	if (strlen($path) == 0){
+	    return returnError("Error. Url directory is not valid: " . $aurlpath[$j]);
+	}
+    } else {
+	// valid url passed, translate to full absolute path
+        $path = url2absolute($dir);
     }
-    
-    $path = url2full($dir);
     if (strlen($path) == 0){
 	return returnError("Error. Absolute directory not found for url: " . $aurlpath[$j]);
     }
@@ -72,7 +79,11 @@ for ($j = 0; $j < count($aurlpath); $j++){
     
     $dir = dirname($path);
     $allowed = false;
+    $validpathsempty = true;
     for ($i = 0; $i < count($validpaths); $i++){
+	if ($validpaths[$i] !== ""){
+	    $validpathsempty = false;
+	}
 	// validate the path is a specified directory or a subdirectory of the specified directory
 	if ($dir == $validpaths[$i] ||
 		$dir . "/" == substr($validpaths[$i], 0, strlen($dir . "/"))   ){
@@ -81,7 +92,7 @@ for ($j = 0; $j < count($aurlpath); $j++){
 	}
     }
     $data = array("status" => "", "result" => "");
-    if (!$allowed){
+    if (!$allowed && !$validpathsempty){
 	return returnError("Error. Directory is not allowed: " . $aurlpath[$j]);
     }
 
