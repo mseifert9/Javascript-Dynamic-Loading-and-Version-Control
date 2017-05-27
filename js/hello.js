@@ -15,7 +15,7 @@ $ms.Hello = {
     label.innerText = text + " - " + foobar;
     
     var img = document.createElement("img");
-    img.src = $ms.STATIC_JS_COMMON + "/img/image.png"
+    img.src = $ms.STATIC_JS_COMMON + "/img/star-18.png"
     document.body.appendChild(img);
   }
 }
