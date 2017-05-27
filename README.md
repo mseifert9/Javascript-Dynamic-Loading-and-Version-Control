@@ -48,10 +48,10 @@ moddate.php is called and returns all file timestamps for the specified director
         #Rules for Versioned Static Files
         RewriteRule ^(js|js-common|css|css-common|img|img-common)/(.+)\.([0-9])+\.(js|css|php|jpg|gif|png)(.*)$ $1/$2.$4$5 [L]
 
-**paths.php:**
+**common.php:**
     Contains the PHP constants and JS variables which contain URL and absolute paths to the files on the server.
     The server translates the URL paths to absolute paths in order to find the files and read the timestamps. 
-    See paths.php for further info.
+    See common.php for further info.
     Also contains common php functions including error checking code.
 
 **moddate.php:**
