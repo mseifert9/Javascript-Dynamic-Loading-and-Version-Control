@@ -1,5 +1,5 @@
 var dependants = [
-	{file: "gradient.min.js", ns: "Gradient", subDir: "colorpicker"},
+	{file: "bar.js", ns: "FooBar", subDir: "foo"},
 	// preload image
 	{file: "image.png", baseDir: "js", subDir: "img"},
 ]
@@ -11,7 +11,8 @@ $ms.Hello = {
   sayHello: function(text){
     var label = document.createElement("label");
     document.body.appendChild(label);
-    label.innerText = text;
+  	var foobar = $ms.FooBar.secretMessage;
+    label.innerText = text + " - " + foobar;
     
     var img = document.createElement("img");
     img.src = $ms.STATIC_JS_COMMON + "/img/image.png"
