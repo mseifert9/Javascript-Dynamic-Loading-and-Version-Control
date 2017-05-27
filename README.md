@@ -32,7 +32,6 @@ The PHP version() function adds the file timestamp to hello.js.
 
 _
 
-
     <script src="<?php echo version(STATIC_JS_COMMON, 'hello.js') ?>"></script>
 
 - Specify the directories to poll on the server. 
@@ -40,7 +39,6 @@ The doVersionChecking() function makes an HTTP request to the server.
 moddate.php is called and returns all file timestamps for the specified directories.
 
 _
-
 
     <script>
         sourceFiles.doVersionChecking([
