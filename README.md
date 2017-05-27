@@ -42,24 +42,24 @@ moddate.php is called and returns all file timestamps for the specified director
         ]);
     </script>   
 
-**.htaccess:**
+<b>.htaccess:</b>
     Removes the timestamp from the filename
 
     RewriteEngine On
         #Rules for Versioned Static Files
         RewriteRule ^(js|js-common|css|css-common|img|img-common)/(.+)\.([0-9])+\.(js|css|php|jpg|gif|png)(.*)$ $1/$2.$4$5 [L]
 
-**common.php:**
+<b>common.php:</b>
     Contains the PHP constants and JS variables which contain URL and absolute paths to the files on the server.
     The server translates the URL paths to absolute paths in order to find the files and read the timestamps. 
     See common.php for further info.
     Also contains common php functions including error checking code.
 
-**moddate.php:**
+<b>moddate.php:</b>
     Called by javascript requesting file information
     It returns timestamp information for the files in directories specified
 
-**The Namespace:**
+<b>The Namespace:</b>
     This project uses the com.mseifert namespace. In addition to this namespace, two global variables are used as shortcuts:
     $msRoot = com.mseifert
     $ms = $msRoot.common
