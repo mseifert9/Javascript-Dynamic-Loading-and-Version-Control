@@ -2,6 +2,9 @@
 // this file is called by javascript requesting file information
 // it returns timestamp information for the files in directories specified
 
+// allow cross domain requests
+header("Access-Control-Allow-Origin: *");
+
 // common.php - and include file shared by demo.php and moddate.php
 include "common.php";
 if (!isset($_POST)) {
