@@ -46,7 +46,7 @@
 
 <?php
 // php error checking
-define('LOG_FILE', FULL_SITE_ROOT . '/error.log');
+define('LOG_FILE', realurl(FULL_SITE_ROOT) . '/error.log');
 error_reporting(E_ALL);
 ini_set('error_log', LOG_FILE);
 ini_set('log_errors', true);
