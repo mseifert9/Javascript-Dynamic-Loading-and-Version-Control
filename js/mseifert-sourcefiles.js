@@ -135,8 +135,7 @@ $ms = $msRoot.common = function () {
 			source[i].type = "unknown";
 			console.log("Source File unknown type for: " + source[i].file);
 		    }
-		    var dir = sourceFiles.buildUrl(source[i]);
-		    
+		    var dir = sourceFiles.buildUrlPath(source[i].baseDir, source[i].type);		    
 		    var subDir = "";
 		    if (typeof source[i].subDir !== "undefined"){
 			// add preceeding forward slash if not already there
@@ -210,7 +209,7 @@ $ms = $msRoot.common = function () {
 			}
 			if (result !== false){
 			    sourceFiles.source[i].loaded = true;
-			    sourceFiles.onload({target: {src: sourceFiles.source[i].baseFile}});
+			    sourceFiles.onLoad({target: {src: sourceFiles.source[i].baseFile}});
 			}
 			continue;
 		    }
@@ -233,7 +232,7 @@ $ms = $msRoot.common = function () {
 		    sourceFiles.loading.push(sourceFiles.source[i].baseFile);
 
 		    // file - load the source file
-		    loadSourceFile(sourceFiles.source[i].file, sourceFiles.source[i].type, sourceFiles.onload)
+		    loadSourceFile(sourceFiles.source[i].file, sourceFiles.source[i].type, sourceFiles.onLoad)
 		}
 	    }
 	},
@@ -251,7 +250,7 @@ $ms = $msRoot.common = function () {
 	    // namespace exists
 	    return true;
 	},
-	onload: function(e){
+	onLoad: function(e){
 	    // flag file as loaded
 	    var baseFile = e.target.src.substr(e.target.src.lastIndexOf("/") + 1);
 	    var split = baseFile.split("?");
@@ -261,9 +260,9 @@ $ms = $msRoot.common = function () {
 	    for (var i = 0; i < sourceFiles.source.length; i++){
 		if (sourceFiles.source[i].baseFile == baseFile){
 		    sourceFiles.source[i].loaded = true;
-		    if (sourceFiles.source[i].onload){
+		    if (sourceFiles.source[i].onLoad){
 			// custom onLoad
-			sourceFiles.source[i].onload();
+			sourceFiles.source[i].onLoad();
 		    }
 		    break;
 		}
@@ -304,7 +303,7 @@ $ms = $msRoot.common = function () {
 	    versionCheck.timeStamp = Date.now();
 	    versionCheck.complete = false
 	    versionCheck.path = path;
-	    var url = $ms.LINK_SITE_ROOT + "/moddate.php";
+	    var url = sourceFiles.buildUrlPath("site") + "/moddate.php";
 	    var data = {path: path};
 	    data = JSON.stringify(data);
 	    var http = new XMLHttpRequest();
@@ -315,8 +314,8 @@ $ms = $msRoot.common = function () {
 	    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 	    http.onreadystatechange = function() {//Call a function when the state changes.
+v("state: " + http.readyState, "status: " + http.status, "Text: " + http.responseText);
 		if(http.readyState == 4 && http.status == 200) {
-		    //alert(http.responseText);
 		    var response = http.responseText;
 		    var data = JSON.parse(response);
 		    var error = false;
@@ -355,39 +354,53 @@ $ms = $msRoot.common = function () {
 	    var result = /^function\s+(?:bound\s*)?([^\(\s]+)/.exec(func);
 	    return result ? result[1] : "";
 	},
-	buildUrl: function(source){
-	    if (typeof source.baseDir == "undefined"){
-		source.baseDir = source.type;
-	    }
-	    var urlDir = function(baseDir){
-		if (baseDir.indexOf("/") !== -1){
+	buildUrlPath: function(baseDir, type){
+	    baseDir = baseDir || type || "";
+	    var urlDir = function(_baseDir){
+		if (_baseDir.indexOf("/") !== -1){
 		    // specified path - relative to current path
 		    // to use relative to different path, use one of the flags below
-		    return baseDir;
-		} else if (baseDir.indexOf("js") !== -1){
+		    return _baseDir;
+		} else if (_baseDir.indexOf("js") !== -1){
 		    return "STATIC_JS_COMMON";
-		} else if (baseDir.indexOf("css") !== -1){
+		} else if (_baseDir.indexOf("css") !== -1){
 		    return "STATIC_CSS_COMMON";
-		} else if (baseDir.indexOf("img") !== -1){
+		} else if (_baseDir.indexOf("img") !== -1){
 		    return "STATIC_IMG_COMMON";
-		} else if (baseDir.indexOf("site") !== -1){
+		} else if (_baseDir.indexOf("static-site") !== -1){
+		    // cookieless domain
 		    return "STATIC_SITE_ROOT";
-		} else if (baseDir.indexOf("root") !== -1){
+		} else if (_baseDir.indexOf("site") !== -1){
+		    // cookied domain
+		    return "LINK_SITE_ROOT";
+		} else if (_baseDir.indexOf("root") !== -1 || _baseDir == ""){
 		    // root of server at top of domain tree
 		    return "STATIC_TOP_ROOT";
 		} else {
 		    // invalid - unless new namespace property added to match
-		    return baseDir;
+		    return _baseDir;
 		}
-	    }(source.baseDir);
+	    }(baseDir);
 	    
 	    if (typeof $ms[urlDir] !== "undefined"){
 		// standard diredctory stored in namespace variable
+		if ($ms[urlDir] == ""){
+		    // default url is empty - use the current directory
+		    return sourceFiles.currentDir();
+		}
+		// return defined directory
 		return $ms[urlDir];
 	    } else {
-		return window.location.origin ? window.location.origin + '/' : window.location.protocol + '/' + window.location.host + urlDir;
+		// return current directlry plus whatever was passed 
+		return sourceFiles.currentDir() + urlDir;
 	    }
 	},
+	currentDir: function(){
+	    var root = window.location.origin ? window.location.origin : window.location.protocol + '/' + window.location.host;
+	    var pathname = window.location.pathname;
+	    var path = pathname.substring(0, pathname.lastIndexOf('/'))
+	    return root + path;
+	}
     }
 
     // dynamically load a js or css file
