@@ -2,10 +2,10 @@
 Manage dynamic loading of dependent JavaScript files and functions with automatic versioning
 
 **Purpose:**
-This project allows specifying a single js file and have all dependent js files dynamically loaded. The dynamically loaded files will be given a filename which has been appended with its timestamp. An .htaccess rule will filters out the timestamp.
+This project allows specifying javascript files (or functions) to load with dependent javascript files (and functions) automatically and dynamically loading. Files are given a uniquely generated filename for browser cache version control.
 
 **Methodology:**
-Within each .js file, I specify the list of dependent files with the associated created class object (ns) so I know when the dependent file has been loaded.
+Within each .js file, the list of dependent files is specified with an associated class object (namespace) which will be created. This object's existence is checked for and its existence is the verification that the dependent file has been loaded.
 
 For example, hello.js may have the following declarations:
 
@@ -21,8 +21,7 @@ For example, hello.js may have the following declarations:
     sourceFiles.add(dependants);
     sourceFiles.load();
 
-**Note:**
-All declarations listed in a .js file are for files dependent on this file. Declarations can include dependencies which must be loaded or executed first. In this example, the file dragdrop.min.js must be loaded and the window's load event must have fired before the function doSomethingOnLoad is run. The file dragdrop.min.js will be loaded immediately.
+Declarations listed are for files dependent on this file and / or functions that this file will use later. Declarations can include dependencies which must be loaded or executed first. In this example, the file dragdrop.min.js must be loaded and the window's load event must have fired before the function doSomethingOnLoad is run. The file dragdrop.min.js will be loaded immediately.
 
 **demo.php (the main php file)**
 1) Load the javascript common library (mseifert-sourcefiles.js)
@@ -60,6 +59,6 @@ moddate.php is called and returns all file timestamps for the specified director
     It returns timestamp information for the files in directories specified
 
 **The Namespace**
-    I use the com.mseifert namespace. In addition to this namespace, I add two global variables as shortcuts:
+    This project uses the com.mseifert namespace. In addition to this namespace, two global variables are used as shortcuts:
     $msRoot = com.mseifert
     $ms = $msRoot.common
