@@ -30,6 +30,8 @@ Declarations listed are for files dependent on this file and / or functions that
 - Loads the javascript file hello.js
 The PHP version() function adds the file timestamp to hello.js.
 
+a
+
     <script src="<?php echo version(STATIC_JS_COMMON, 'hello.js') ?>"></script>
 
 - Specify the directories to poll on the server. 
