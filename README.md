@@ -22,9 +22,9 @@ For example, hello.js may have the following declarations:
 
 Declarations listed are for files dependent on this file and / or functions that this file will use later. Declarations can include dependencies which must be loaded or executed first. In this example, when the file hello.js is loaded, the above declaration will automatically load the file bar.js. In addition, it will also preload the image file star-18.png when the window's load event is fired.
 
-<b><u>Files in the project</u></b>
+<b>Files in the project</b>
 
-**<u>demo.php (the main php file)</u>**
+<b>demo.php (the main php file)</b>
 1) Loads the javascript common library (mseifert-sourcefiles.js)
 2) Loads the javascript file hello.js
 The PHP version() function adds the file timestamp to hello.js.
