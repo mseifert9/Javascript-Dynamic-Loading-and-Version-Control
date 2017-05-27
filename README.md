@@ -80,3 +80,5 @@ _
     This project uses the com.mseifert namespace. In addition to this namespace, two global variables are used as shortcuts:
     $msRoot = com.mseifert
     $ms = $msRoot.common
+
+A live working example of this library can be found at http://design.mseifert.com/demo/demo.php
