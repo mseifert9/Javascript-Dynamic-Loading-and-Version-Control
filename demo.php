@@ -1,9 +1,9 @@
 <?php 
-    // paths.php 
+    // common.php 
     //	    defines php path constants and js path variables
     //	    creates the js namespace where the paths are stored
     //	    contains basic error checking code - error.log in the demo directory will contain php errors
-    include "paths.php" ;
+    include "common.php" ;
 ?>
 
 <!-- Load the javascript common library which extends the namespace and adds to it shared functions-->
