@@ -2,8 +2,8 @@
 // this file is called by javascript requesting file information
 // it returns timestamp information for the files in directories specified
 
-// paths.php - and include file shared by demo.php and moddate.php
-include "paths.php";
+// common.php - an include file shared by demo.php and moddate.php
+include "common.php";
 if (!isset($_POST)) {
     return;
 }
