@@ -7,7 +7,7 @@ To dynamically load javascript files (and functions) based on listed dependencie
 **Methodology:**
 Within each .js file, a list of dependent files is specified. Each file is listed with an associated object name which will be used as verification that the dependent file has been loaded.
 
-For example, hello.js may have the following declarations:
+For example, hello.js may have the following dependant declarations:
 
     $ms.sourceFiles.add([
          *	this file has two dependants which will be automatically queued for loading
@@ -59,6 +59,18 @@ moddate.php is called and returns all file timestamps for the specified director
     Called by javascript requesting file information
     It returns timestamp information for the files in directories specified
 
+<b>mseifert-sourcefiles.js</b>
+    The javascript project library
+
+<b>hello.js</b>
+    A sample javascript file which is loaded with depandant conditions.
+
+<b>bar.js</b>
+    A sample javascript file to demonstrate dynamic loading using a dependency declaration.
+    
+<b>star-18.img</b>
+    An image file to demonstrate dynamic loading of an image (used to prelaod images for performance and user experience).
+    
 <b>The Namespace:</b>
     This project uses the com.mseifert namespace. In addition to this namespace, two global variables are used as shortcuts:
     $msRoot = com.mseifert
