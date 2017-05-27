@@ -4,7 +4,7 @@ Manage dynamic loading of dependent JavaScript files and functions with automati
 **Purpose:**
 This project allows specifying javascript files (or functions) to load with dependent javascript files (and functions) automatically and dynamically loading. Files are given a uniquely generated filename for browser cache version control.
 
-**Methodology:**
+**Methodology - **
 Within each .js file, the list of dependent files is specified with an associated class object (namespace) which will be created. This object's existence is checked for and its existence is the verification that the dependent file has been loaded.
 
 For example, hello.js may have the following declarations:
