@@ -40,33 +40,33 @@ Version checking is turned with a simple call, passing the directories to be pol
     </script>   
 
 **.htaccess:**
-    Removes the timestamp from the filename
+Removes the timestamp from the filename
 
     RewriteEngine On
         #Rules for Versioned Static Files
         RewriteRule ^(js|js-common|css|css-common|img|img-common)/(.+)\.([0-9])+\.(js|css|php|jpg|gif|png)(.*)$ $1/$2.$4$5 [L]
 
 **common.php:**
-    Contains the PHP constants and JS variables which contain URL and absolute paths to the files on the server.
-    The server translates the URL paths to absolute paths in order to find the files and read the timestamps. 
-    See common.php for further info.
-    Also contains common php functions including error checking code.
+Contains the PHP constants and JS variables which contain URL and absolute paths to the files on the server.
+The server translates the URL paths to absolute paths in order to find the files and read the timestamps. 
+See common.php for further info.
+Also contains common php functions including error checking code.
 
 **moddate.php:**
-    Called by javascript requesting file information
-    It returns timestamp information for the files in directories specified
+Called by javascript requesting file information
+It returns timestamp information for the files in directories specified
 
 **mseifert-sourcefiles.js**
-    The javascript project library. This file contains the common namespace functions as well as including the sourceFiles object which contains the functions that manage the queue and versioning.
+The javascript project library. This file contains the common namespace functions as well as including the sourceFiles object which contains the functions that manage the queue and versioning.
 
 **hello.js**
-    A sample javascript file which creates the user interface and loads depandant files (javascript and image).
+A sample javascript file which creates the user interface and loads depandant files (javascript and image).
 
 **bar.js**
-    A sample javascript file to demonstrate dynamic loading using a dependency declaration.
+A sample javascript file to demonstrate dynamic loading using a dependency declaration.
     
 **star-18.img**
-    An image file to demonstrate dynamic loading of an image (used to prelaod images for performance and user experience).
+An image file to demonstrate dynamic loading of an image (used to prelaod images for performance and user experience).
     
 ## The Namespace
 This project uses the com.mseifert javascript namespace. In addition to the namespace, two global variables are used as shortcuts:
