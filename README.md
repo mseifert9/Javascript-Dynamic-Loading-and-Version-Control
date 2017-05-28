@@ -39,7 +39,7 @@ Version checking is turned with a simple call, passing the directories to be pol
         ]);
     </script>   
 
-###.htaccess:###
+### .htaccess
 Removes the timestamp from the filename
 
     RewriteEngine On
