@@ -9,11 +9,12 @@ Within each .js file, a list of dependent files is specified. Each file is liste
 
 For example, hello.js may have the following dependant declarations:
 
+    /*	this file has two dependants which will be automatically queued for loading
+    *	  1. /js/foo/bar.js - which supplies $ms.FooBar.secretMessage()
+    *     2. /img/star-18.png - which requires the document 'load' event to fire before the image is appended to the docuement
+    */
+
     $ms.sourceFiles.add([
-         *	this file has two dependants which will be automatically queued for loading
-         *	    1.	/js/foo/bar.js - which supplies $ms.FooBar.secretMessage()
-         *	    2.	/img/star-18.png - which requires the document 'load' event to fire before the image is appended to the docuement
-         */
         {file: "bar.js", ns: "FooBar", subDir: "foo"},
         // preload image
         {file: "star-18.png", dependencies:[{file: function onload(){}}]}
