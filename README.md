@@ -68,9 +68,8 @@ Version checking is turned with a simple call, passing the directories to be pol
 **star-18.img**
     An image file to demonstrate dynamic loading of an image (used to prelaod images for performance and user experience).
     
-**The Namespace:**
-    This project uses the com.mseifert javascript namespace. In addition to this namespace, two global variables are used as shortcuts:
-    
+##The Namespace:
+    This project uses the com.mseifert javascript namespace. In addition to the namespace, two global variables are used as shortcuts:
     
     $msRoot = com.mseifert
     $ms = $msRoot.common
