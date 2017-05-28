@@ -25,7 +25,7 @@ Declarations listed are for files dependent on this file and / or functions that
 
 ## Files in the project
 
-**demo.php (the main php file)**
+### demo.php (the main php file)
 
 - Loads the javascript common library (mseifert-sourcefiles.js)
 - Loads the javascript demo file hello.js with timestamp information added to the filename.
@@ -46,26 +46,26 @@ Removes the timestamp from the filename
         #Rules for Versioned Static Files
         RewriteRule ^(js|js-common|css|css-common|img|img-common)/(.+)\.([0-9])+\.(js|css|php|jpg|gif|png)(.*)$ $1/$2.$4$5 [L]
 
-**common.php:**
+### common.php
 Contains the PHP constants and JS variables which contain URL and absolute paths to the files on the server.
 The server translates the URL paths to absolute paths in order to find the files and read the timestamps. 
 See common.php for further info.
 Also contains common php functions including error checking code.
 
-**moddate.php:**
+### moddate.php
 Called by javascript requesting file information
 It returns timestamp information for the files in directories specified
 
-**mseifert-sourcefiles.js**
+### mseifert-sourcefiles.js
 The javascript project library. This file contains the common namespace functions as well as including the sourceFiles object which contains the functions that manage the queue and versioning.
 
-**hello.js**
+### hello.js
 A sample javascript file which creates the user interface and loads depandant files (javascript and image).
 
-**bar.js**
+### bar.js
 A sample javascript file to demonstrate dynamic loading using a dependency declaration.
     
-**star-18.img**
+### star-18.img
 An image file to demonstrate dynamic loading of an image (used to prelaod images for performance and user experience).
     
 ## The Namespace
