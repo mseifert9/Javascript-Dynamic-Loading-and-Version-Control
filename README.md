@@ -77,7 +77,7 @@ _
     An image file to demonstrate dynamic loading of an image (used to prelaod images for performance and user experience).
     
 <b>The Namespace:</b>
-    This project uses the com.mseifert namespace. In addition to this namespace, two global variables are used as shortcuts:
+    This project uses the com.mseifert javascript namespace. In addition to this namespace, two global variables are used as shortcuts:
     
     
     $msRoot = com.mseifert
