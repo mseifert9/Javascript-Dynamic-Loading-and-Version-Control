@@ -68,7 +68,7 @@ _
     The javascript project library
 
 <b>hello.js</b>
-    A sample javascript file which is loaded with depandant conditions.
+    A sample javascript file which creates the user interface and loads depandant files (javascript and image).
 
 <b>bar.js</b>
     A sample javascript file to demonstrate dynamic loading using a dependency declaration.
