@@ -76,5 +76,22 @@ Version checking is turned with a simple call, passing the directories to be pol
 
 ## Working Demo
 A live working demo of this library can be found at http://design.mseifert.com/demo-sourcefile/demo.php
-The path variables can be left blank and the project will use the default subdirectories of js, css, and img. To modify this project for your own purposes, see common.php for customizing the paths.
+It is very basic and shows the two basic work flows:
 
+- dependants: files and functions that are loaded after a file loads and 
+- dependencies: files and functions which must be loaded for a file or function to load
+
+dependencies: [{file: function onload(){}}, {file: "hello.js", ns: "Hello"}]
+
+The demo consists of dynamically loading the function **$ms.Hello.sayHello("Click Me")** which displays the label "Click Me." 
+This function has the two dependencies:
+- hello.js must be loaded first
+- the document load event must fire first
+
+hello.js loads two dependant files, 
+- **star-18.png** - showing preloading of images
+- **/foo/bar.js** - demonstrating loading depandant js files and also custom directories
+
+Clicking on the "Click Me" label will access functions from **/foo/bar.js** and use the loaded image **star-18.png**.
+
+The path variables in **common.php** can be left blank and the project will use the default subdirectories of js, css, and img relative to the installation. To modify this project for your own purposes, see **common.php** for customizing the paths.
