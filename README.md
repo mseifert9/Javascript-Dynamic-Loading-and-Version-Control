@@ -38,7 +38,7 @@ _
 The doVersionChecking() function makes an HTTP request to the server.
 moddate.php is called and returns all file timestamps for the specified directories.
 
-_
+
 
     <script>
         sourceFiles.doVersionChecking([
