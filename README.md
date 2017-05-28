@@ -81,4 +81,4 @@ _
     $msRoot = com.mseifert
     $ms = $msRoot.common
 
-A live working example of this library can be found at http://design.mseifert.com/demo/demo.php
+A live working example of this library can be found at http://design.mseifert.com/demo-sourcefile/demo.php
