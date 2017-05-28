@@ -65,7 +65,7 @@ _
     It returns timestamp information for the files in directories specified
 
 <b>mseifert-sourcefiles.js</b>
-    The javascript project library
+    The javascript project library. This file contains the common namespace functions as well as including the sourceFiles object which contains the functions that manage the queue and versioning.
 
 <b>hello.js</b>
     A sample javascript file which creates the user interface and loads depandant files (javascript and image).
