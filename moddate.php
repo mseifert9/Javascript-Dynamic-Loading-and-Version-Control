@@ -132,7 +132,7 @@ $data['result'] = $files;
 ob_clean();
 ob_end_clean();
 echo (json_encode($data));
-errorlog("success");
+//errorlog("success");
 
 
 function returnError($message){
