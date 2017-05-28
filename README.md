@@ -1,4 +1,4 @@
-# Javascript Dynamic Loading of files and function with Version Control
+## Dynamic Loading of Javascript files and function with Version Control
 
 **Purpose:**
 To dynamically load javascript files (and functions) based on listed dependencies while also generating unique filenames for browser cache version control.
