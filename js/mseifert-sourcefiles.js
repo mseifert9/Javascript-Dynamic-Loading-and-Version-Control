@@ -163,6 +163,11 @@ $ms = $msRoot.common = function () {
 		sourceFiles.source.push(source[i]);
 	    }
 	},
+	onloadTest: function onload(){
+	    // when file is minimized, any anonymous fn's will lose their name
+	    // for the onload test, must have a real function to equate to
+	    // onload will allow document.readyState === "interactive" which seems to work for all but ie9
+	},
 	load: function(){
 	    var versionCheckLength = sourceFiles.versionCheck.length;
 	    for (var i = 0; i < sourceFiles.versionCheck.length; i++){
@@ -395,7 +400,7 @@ $ms = $msRoot.common = function () {
 	    }
 	},
 	currentDir: function(){
-	    var root = window.location.origin ? window.location.origin : window.location.protocol + '/' + window.location.host;
+	    var root = window.location.origin ? window.location.origin : window.location.protocol + '//' + window.location.host;
 	    var pathname = window.location.pathname;
 	    var path = pathname.substring(0, pathname.lastIndexOf('/'))
 	    return root + path;
@@ -403,7 +408,7 @@ $ms = $msRoot.common = function () {
     }
 
     // dynamically load a js or css file
-    function loadSourceFile(filename, filetype, onloadFn) {
+    function loadSourceFile(filename, filetype, onloadFn, id) {
 	if (typeof filetype == "undefined") {
 	    filetype = filename.substr(filename.lastIndexOf('.') + 1)
 	}
@@ -426,11 +431,17 @@ $ms = $msRoot.common = function () {
 	}
 	if (typeof onloadFn !== "undefined") {
 	    item.onload = onloadFn;
-	    //item.onreadystatechange = runFn;
 	}
+	if (typeof id !== "undefined") {
+	    item.id = id;
+	}	
 	if (typeof item != "undefined") {
 	    if (filetype == "img"){
-		document.body.appendChild(item);
+		try {
+		    document.body.appendChild(item);
+		} catch (e){
+		    console.log("Error loading Image file: " + filename);
+		}
 	    } else {
 		document.head.appendChild(item);
 	    }
