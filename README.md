@@ -1,4 +1,4 @@
-# MS Dynamic JavaScript Loader
+# Dynamic JavaScript Loader
 ## Dynamic Loading of Javascript files and function with Version Control
 
 This library will dynamically load javascript files (and functions), css, and images based on listed dependencies while also generating unique filenames for browser cache version control.
