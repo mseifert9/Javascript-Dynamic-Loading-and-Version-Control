@@ -24,7 +24,7 @@
     */    
     $ms.sourceFiles.add([
 	    {file: function doSomething(){$ms.Hello.sayHello("Click Me")}, 
-		dependencies: [{file: function onload(){}}, {file: "hello.js", ns: "Hello"}]}
+		dependencies: [{file: $ms.sourceFiles.onloadTest}, {file: "hello.js", ns: "Hello"}]}
     ]);
     $ms.sourceFiles.load();
 </script>

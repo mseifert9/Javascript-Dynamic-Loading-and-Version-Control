@@ -6,7 +6,7 @@ $ms.sourceFiles.add([
      */
     {file: "bar.js", ns: "FooBar", subDir: "foo"},
     // preload image
-    {file: "star-18.png", dependencies:[{file: function onload(){}}]}
+    {file: "star-18.png", dependencies:[{file: $ms.sourceFiles.onloadTest}]}
 ]);
 $ms.sourceFiles.load();
 
