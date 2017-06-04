@@ -32,7 +32,7 @@ The second method above is accomplished by listing the dependencies in a file ot
 2) A common solution for maintaining javascript file versions is to dynamically append javascript filenames with a timestamp. If a file is modified, its timestamp changes and therefore the filename changes, refreshing browser caches with the new version. .htaccess is used to strip out the timestamps from the filenames. The filename is usually read using the `php` `filemtime()` function. However, when javascript files are loaded dynamically, we are running on the local machine and have lost the ability to directly use php for timestamp information. This library overcomes that limitation.
 
 For example, in the demo, `hello.js` has the following dependant declarations:
-
+```
     /*  
      *  this file has two dependants which will be automatically queued for loading
      *      1. /js/foo/bar.js - which supplies $ms.FooBar.secretMessage()
@@ -45,17 +45,14 @@ For example, in the demo, `hello.js` has the following dependant declarations:
         {file: "star-18.png", dependencies:[{file: function onload(){}}]}
     ]);
     $ms.sourceFiles.load();
-
+```
 A second example shows the pre-loading of an image file.
+```
     <script src="<?php echo 'http://path/to/file.' . filemtime(/path/to/file.js) . '.js') ?>"></script>
-
-### Important
-mseifert.
+```
 
 ## Files in the project
-
 ### demo.php (the main php file)
-
 - Loads the javascript common library (mseifert-sourcefiles.js)
 - Loads the javascript demo file hello.js with timestamp information added to the filename.
 
@@ -70,11 +67,11 @@ Version checking is turned with a simple call, passing the directories to be pol
 
 ### .htaccess
 Removes the timestamp from the filename
-
+```
     RewriteEngine On
         #Rules for Versioned Static Files
         RewriteRule ^(js|js-common|css|css-common|img|img-common)/(.+)\.([0-9])+\.(js|css|php|jpg|gif|png)(.*)$ $1/$2.$4$5 [L]
-
+```
 ### common.php
 -- Contains the PHP constants and JS variables which contain URL and absolute paths to the files on the server.
 -- The server translates the URL paths to absolute paths in order to find the files and read the timestamps. 
@@ -101,10 +98,10 @@ An image file to demonstrate dynamic loading of an image (used to prelaod images
     
 ## The Namespace
 This project uses the com.mseifert javascript namespace. In addition to the namespace, two global variables are used as shortcuts:
-    
+``` 
     $msRoot = com.mseifert
     $ms = $msRoot.common
-
+```
 ## Working Demo
 A live working demo of this library can be found at http://design.mseifert.com/demo-sourcefile/demo.php
 It is very basic and shows the two basic work flows:
